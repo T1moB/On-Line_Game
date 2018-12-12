@@ -26,43 +26,14 @@ bool Game::init(const char *title, int xPosition, int yPosition, int height, int
 
 	SDLNet_Init();
 
-	/*window = SDL_CreateWindow(title, xPosition, yPosition, height, width, flags);
-
-	if (!window) {
-		std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
-		return false;
-	}
-
-	renderer = SDL_CreateRenderer(window, -1, 0);
-
-	if (!renderer) {
-		return false;
-	}*/
-
 	SDLNet_ResolveHost(&ip, NULL, portNumber);
 
-	// init create game state
-	//gameStateMachine = new GameStateMachine();
-	//gameStateMachine->changeState(new MenuState());
-
-	//SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-
+	
 	//create a socket set that will be able to watch up to a given amount of sockets.
 	sockets = SDLNet_AllocSocketSet(maxSockets);
 
 	//To create a listening TCP socket on the given port number (server):
 	server = SDLNet_TCP_Open(&ip);
-
-	// init inputhandler and texture manager (singletons)
-	//TheTextureManager::getInstance()->load("assets/animate-alpha.png", "animate", renderer);
-
-	// init game objects (players etc)
-	//Player *player = new Player(new LoaderParams(100, 100, 128, 82, "animate"));
-	//Enemy *enemy = new Enemy(new LoaderParams(300, 300, 128, 82, "animate"));
-
-	// add gameobjects to the list
-	//gameObjects.push_back(player);
-	//gameObjects.push_back(enemy);
 
 	running = true;
 	return true;
@@ -71,18 +42,11 @@ bool Game::init(const char *title, int xPosition, int yPosition, int height, int
 void Game::render()
 {
 	SDL_RenderClear(renderer);
-
-	// render gamestatemachine
-	//gameStateMachine->render();
-
 	SDL_RenderPresent(renderer);
 }
 
 void Game::handleEvents()
 {
-	// handle input
-	/*InputHandler *inputHandler = TheInputHandler::getInstance();
-	inputHandler->update();*/
 }
 
 void Game::update()

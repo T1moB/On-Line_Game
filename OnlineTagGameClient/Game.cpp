@@ -42,10 +42,6 @@ bool Game::init(const char *title, int xPosition, int yPosition, int height, int
 	if (!renderer) {
 		return false;
 	}
-	//SDLNet_ResolveHost(&ip, "localhost", portNumber);
-
-	//server = SDLNet_ResolveIP(&ip);
-	//client = SDLNet_TCP_Open(&ip);
 
 	// Create the socket set with enough space to store our desired number of connections (i.e. sockets)
 	if (socketSet == NULL)
@@ -107,7 +103,6 @@ bool Game::init(const char *title, int xPosition, int yPosition, int height, int
 
 	if (SDLNet_SocketReady(client) != 0)
 	{
-		//socketvector[i].timeout = SDL_GetTicks();
 		memset(tmp, 0, sizeof(tmp));
 		SDLNet_TCP_Recv(client, tmp, maxMessageLength);
 		int num = tmp[0] - '0';
@@ -132,22 +127,7 @@ bool Game::init(const char *title, int xPosition, int yPosition, int height, int
 			other->Init(renderer);
 		}
 	}
-
-	// init create game state
-	//gameStateMachine = new GameStateMachine();
-	//gameStateMachine->changeState(new MenuState());
-
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	// init inputhandler and texture manager (singletons)
-	//TheTextureManager::getInstance()->load("assets/animate-alpha.png", "animate", renderer);
-
-	// init game objects (players etc)
-	//Player *player = new Player(new LoaderParams(100, 100, 128, 82, "animate"));
-	//Enemy *enemy = new Enemy(new LoaderParams(300, 300, 128, 82, "animate"));
-
-	// add gameobjects to the list
-	//gameObjects.push_back(player);
-	//gameObjects.push_back(enemy);
 
 	running = true;
 	return true;
@@ -158,17 +138,12 @@ void Game::render()
 	SDL_RenderClear(renderer);
 	you->render(renderer);
 	other->render(renderer);
-	// render gamestatemachine
-	//gameStateMachine->render();
 
 	SDL_RenderPresent(renderer);
 }
 
 void Game::handleEvents()
 {
-	// handle input
-	//InputHandler *inputHandler = TheInputHandler::getInstance();
-	//inputHandler->update();
 	SDL_Event e; 
 	if (SDL_PollEvent(&e) != 0) {
 		you->handleEvent(e);
@@ -177,13 +152,6 @@ void Game::handleEvents()
 
 void Game::update()
 {
-	//Accept an incoming connection on the server TCPsocket.
-
-	// The input parameter "server" is the server TCPsocket which was previously created by SDLNet_TCP_Open.
-
-	// "server" socket is never connected to a remote host. What you get back is a new "TCPsocket" that is connected to the remote host.
-
-
 	//check for incoming data
 	// Check if we got a response from the server
 	SDLNet_CheckSockets(socketSet, 0);
@@ -213,13 +181,10 @@ void Game::update()
 		}
 	}
 	you->move(width, height);
-	string tempstr = you->GetPosAsString();
-	//cout << tempstr << endl;
-	//cout << tempstr.c_str() << endl;
+
 	PacketStream packetStream;
 	packetStream.writeInt(you->GetCenterX());
 	packetStream.writeInt(you->GetCenterY());
-	//sprintf_s(tmp, "1 %s \n", tempstr.c_str());
 	packetStream.toCharArray(tmp);
 	SDLNet_TCP_Send(client, tmp, maxMessageLength);
 }
